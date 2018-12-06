@@ -2,14 +2,14 @@ package com.farmerworking.spring;
 
 import java.util.Collection;
 
-public class DirectedGraph {
-    private Collection<Node> nodeList;
+public class DirectedGraph<V> {
+    private Collection<V> vertices;
 
-    public DirectedGraph(Collection<Node> nodeList) {
-        this.nodeList = nodeList;
+    public DirectedGraph(Collection<V> vertices) {
+        this.vertices = vertices;
     }
 
-    public Collection<Node> getNodeList() {
-        return nodeList;
+    public Collection<V> getVertices() {
+        return vertices;
     }
 }

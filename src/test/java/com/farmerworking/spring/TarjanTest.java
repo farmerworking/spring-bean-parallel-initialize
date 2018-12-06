@@ -68,7 +68,7 @@ public class TarjanTest {
             src.addChild(dst);
         }
 
-        DirectedGraph graph = new DirectedGraph(nodeList);
+        DirectedGraph<Node> graph = new DirectedGraph<>(nodeList);
         return new Tarjan(graph);
     }
 

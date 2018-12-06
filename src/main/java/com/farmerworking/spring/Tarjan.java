@@ -10,10 +10,10 @@ public class Tarjan {
     private Stack<Node> stack = new Stack<>();
     private List<Scc> sccList = new ArrayList<>();
 
-    public Tarjan(DirectedGraph directedGraph) {
+    public Tarjan(DirectedGraph<Node> directedGraph) {
         this.directedGraph = directedGraph;
 
-        for(Node node : directedGraph.getNodeList()) {
+        for(Node node : directedGraph.getVertices()) {
             if (this.nonVisited.getOrDefault(node, true)) {
                 dfs(node);
             }
@@ -44,7 +44,7 @@ public class Tarjan {
             do {
                 item = stack.pop();
                 scc.addNode(item);
-                lowMap.put(item, directedGraph.getNodeList().size());
+                lowMap.put(item, directedGraph.getVertices().size());
             } while (!item.equals(node));
         }
     }
