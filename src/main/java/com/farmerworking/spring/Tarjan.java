@@ -52,4 +52,23 @@ public class Tarjan {
     public List<Scc> getSccList() {
         return sccList;
     }
+
+    public DirectedGraph<Scc> generateSccGraph() {
+        Map<Node, Scc> node2SccMap = new HashMap<>();
+
+        for(Scc scc : sccList) {
+            for(Node node : scc.getNodeSet()) {
+                node2SccMap.put(node, scc);
+            }
+        }
+
+        for(Scc scc : sccList) {
+            for(Node node : scc.getAdjacentNodes()) {
+                assert node2SccMap.get(node) != null;
+                scc.addChild(node2SccMap.get(node));
+            }
+        }
+
+        return new DirectedGraph<>(sccList);
+    }
 }

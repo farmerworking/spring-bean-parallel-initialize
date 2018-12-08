@@ -1,15 +1,15 @@
 package com.farmerworking.spring;
 
-import java.util.Collection;
+import java.util.List;
 
 public class DirectedGraph<V> {
-    private Collection<V> vertices;
+    private List<V> vertices;
 
-    public DirectedGraph(Collection<V> vertices) {
+    public DirectedGraph(List<V> vertices) {
         this.vertices = vertices;
     }
 
-    public Collection<V> getVertices() {
+    public List<V> getVertices() {
         return vertices;
     }
 }
