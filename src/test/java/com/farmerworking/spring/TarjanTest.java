@@ -1,6 +1,7 @@
 package com.farmerworking.spring;
 
 import com.farmerworking.spring.utils.Utils;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -55,48 +56,36 @@ public class TarjanTest {
     public void testSccGraphGenerationCase1() throws Exception {
         Tarjan tarjan = TestUtils.initFromFile("simpleDG.txt");
         DirectedGraph<Scc> graph = tarjan.generateSccGraph();
-        assertTrue(graph.getVertices().get(0).getChildren().isEmpty());
-        assertTrue(graph.getVertices().get(0).isFree());
-        assertEquals(0, graph.getVertices().get(0).getPins());
 
-        assertEquals(setOfScc(Sets.newHashSet("4")), Utils.sccSet2StringSetSet(graph.getVertices().get(1).getChildren()));
-        assertFalse(graph.getVertices().get(0).isFree());
-        assertEquals(1, graph.getVertices().get(1).getPins());
+        List<TestStruct> list = Lists.newArrayList(
+                new TestStruct(new HashSet<>(), true),
+                new TestStruct(setOfScc(Sets.newHashSet("4")), false),
+                new TestStruct(setOfScc(Sets.newHashSet("3")), false)
+        );
 
-        assertEquals(setOfScc(Sets.newHashSet("3")), Utils.sccSet2StringSetSet(graph.getVertices().get(2).getChildren()));
-        assertFalse(graph.getVertices().get(0).isFree());
-        assertEquals(1, graph.getVertices().get(2).getPins());
+        testSuit(graph, list);
     }
 
     @Test
     public void testSccGraphGenerationCase2() throws Exception {
         Tarjan tarjan = TestUtils.initFromFile("tinyDG.txt");
         DirectedGraph<Scc> graph = tarjan.generateSccGraph();
-        assertTrue(graph.getVertices().get(0).getChildren().isEmpty());
-        assertTrue(graph.getVertices().get(0).isFree());
-        assertEquals(0, graph.getVertices().get(0).getPins());
 
-        assertEquals(setOfScc(Sets.newHashSet("1")), Utils.sccSet2StringSetSet(graph.getVertices().get(1).getChildren()));
-        assertFalse(graph.getVertices().get(1).isFree());
-        assertEquals(1, graph.getVertices().get(1).getPins());
+        List<TestStruct> list = Lists.newArrayList(
+                new TestStruct(new HashSet<>(), true),
+                new TestStruct(setOfScc(Sets.newHashSet("1")), false),
+                new TestStruct(setOfScc(Sets.newHashSet("0", "2", "3", "4", "5")), false),
+                new TestStruct(setOfScc(
+                        Sets.newHashSet("0", "2", "3", "4", "5"),
+                        Sets.newHashSet("9", "10", "11", "12")),
+                        false),
+                new TestStruct(setOfScc(
+                        Sets.newHashSet("6", "8"),
+                        Sets.newHashSet("9", "10", "11", "12")),
+                        false)
+        );
 
-        assertEquals(setOfScc(Sets.newHashSet("0", "2", "3", "4", "5")), Utils.sccSet2StringSetSet(graph.getVertices().get(2).getChildren()));
-        assertFalse(graph.getVertices().get(2).isFree());
-        assertEquals(1, graph.getVertices().get(2).getPins());
-
-        assertEquals(setOfScc(
-                Sets.newHashSet("0", "2", "3", "4", "5"),
-                Sets.newHashSet("9", "10", "11", "12")
-        ), Utils.sccSet2StringSetSet(graph.getVertices().get(3).getChildren()));
-        assertFalse(graph.getVertices().get(3).isFree());
-        assertEquals(2, graph.getVertices().get(3).getPins());
-
-        assertEquals(setOfScc(
-                Sets.newHashSet("6", "8"),
-                Sets.newHashSet("9", "10", "11", "12")
-        ), Utils.sccSet2StringSetSet(graph.getVertices().get(4).getChildren()));
-        assertFalse(graph.getVertices().get(4).isFree());
-        assertEquals(2, graph.getVertices().get(4).getPins());
+        testSuit(graph, list);
     }
 
     @Test
@@ -104,53 +93,39 @@ public class TarjanTest {
         String[] var = new String[] {"2", "5", "6", "8", "9", "11", "12", "13", "15", "16", "18", "19", "22", "23", "25", "26", "28", "29", "30", "31", "32", "33", "34", "35", "37", "38", "39", "40", "42", "43", "44", "46", "47", "48", "49"};
         Tarjan tarjan = TestUtils.initFromFile("mediumDG.txt");
         DirectedGraph<Scc> graph = tarjan.generateSccGraph();
-        assertTrue(graph.getVertices().get(0).getChildren().isEmpty());
-        assertTrue(graph.getVertices().get(0).isFree());
-        assertEquals(0, graph.getVertices().get(0).getPins());
 
-        assertEquals(setOfScc(Sets.newHashSet("21")), Utils.sccSet2StringSetSet(graph.getVertices().get(1).getChildren()));
-        assertFalse(graph.getVertices().get(1).isFree());
-        assertEquals(1, graph.getVertices().get(1).getPins());
+        List<TestStruct> list = Lists.newArrayList(
+                new TestStruct(new HashSet<>(), true),
+                new TestStruct(setOfScc(Sets.newHashSet("21")), false),
+                new TestStruct(setOfScc(Sets.newHashSet(var)), false),
+                new TestStruct(setOfScc(Sets.newHashSet(var), Sets.newHashSet("41")), false),
+                new TestStruct(setOfScc(Sets.newHashSet(var), Sets.newHashSet("7")), false),
+                new TestStruct(setOfScc(Sets.newHashSet(var), Sets.newHashSet("21")), false),
+                new TestStruct(setOfScc(Sets.newHashSet(var), Sets.newHashSet("14")), false),
+                new TestStruct(setOfScc(
+                        Sets.newHashSet(var),
+                        Sets.newHashSet("21"),
+                        Sets.newHashSet("14"),
+                        Sets.newHashSet("45")), false),
+                new TestStruct(setOfScc(Sets.newHashSet(var)), false),
+                new TestStruct(setOfScc(
+                        Sets.newHashSet(var),
+                        Sets.newHashSet("41"),
+                        Sets.newHashSet("7"),
+                        Sets.newHashSet("0")), false)
+        );
 
-        assertEquals(setOfScc(Sets.newHashSet(var)), Utils.sccSet2StringSetSet(graph.getVertices().get(2).getChildren()));
-        assertFalse(graph.getVertices().get(2).isFree());
-        assertEquals(1, graph.getVertices().get(2).getPins());
+        testSuit(graph, list);
+    }
 
-        assertEquals(setOfScc(Sets.newHashSet(var), Sets.newHashSet("41")
-        ), Utils.sccSet2StringSetSet(graph.getVertices().get(3).getChildren()));
-        assertFalse(graph.getVertices().get(3).isFree());
-        assertEquals(2, graph.getVertices().get(3).getPins());
+    class TestStruct {
+        Set<Set<String>> children;
+        boolean isFree;
 
-        assertEquals(setOfScc(Sets.newHashSet(var), Sets.newHashSet("7")
-        ), Utils.sccSet2StringSetSet(graph.getVertices().get(4).getChildren()));
-        assertFalse(graph.getVertices().get(4).isFree());
-        assertEquals(2, graph.getVertices().get(4).getPins());
-
-        assertEquals(setOfScc(Sets.newHashSet(var), Sets.newHashSet("21")
-        ), Utils.sccSet2StringSetSet(graph.getVertices().get(5).getChildren()));
-        assertFalse(graph.getVertices().get(5).isFree());
-        assertEquals(2, graph.getVertices().get(5).getPins());
-
-        assertEquals(setOfScc(Sets.newHashSet(var), Sets.newHashSet("14")
-        ), Utils.sccSet2StringSetSet(graph.getVertices().get(6).getChildren()));
-        assertFalse(graph.getVertices().get(6).isFree());
-        assertEquals(2, graph.getVertices().get(6).getPins());
-
-        assertEquals(setOfScc(Sets.newHashSet(var), Sets.newHashSet("21"),
-                Sets.newHashSet("14"), Sets.newHashSet("45")
-        ), Utils.sccSet2StringSetSet(graph.getVertices().get(7).getChildren()));
-        assertFalse(graph.getVertices().get(7).isFree());
-        assertEquals(4, graph.getVertices().get(7).getPins());
-
-        assertEquals(setOfScc(Sets.newHashSet(var)), Utils.sccSet2StringSetSet(graph.getVertices().get(8).getChildren()));
-        assertFalse(graph.getVertices().get(8).isFree());
-        assertEquals(1, graph.getVertices().get(8).getPins());
-
-        assertEquals(setOfScc(Sets.newHashSet(var), Sets.newHashSet("41"),
-                Sets.newHashSet("7"), Sets.newHashSet("0")
-        ), Utils.sccSet2StringSetSet(graph.getVertices().get(9).getChildren()));
-        assertFalse(graph.getVertices().get(9).isFree());
-        assertEquals(4, graph.getVertices().get(9).getPins());
+        public TestStruct(Set<Set<String>> children, boolean isFree) {
+            this.children= children;
+            this.isFree = isFree;
+        }
     }
 
     private Set<Set<String>> setOfScc(Set<String>... sets) {
@@ -159,5 +134,16 @@ public class TarjanTest {
             result.add(item);
         }
         return result;
+    }
+
+    private void testSuit(DirectedGraph<Scc> graph, List<TestStruct> list) {
+        for (int i = 0; i < graph.getVertices().size(); i++) {
+            Scc scc = graph.getVertices().get(i);
+            TestStruct testStruct = list.get(i);
+
+            assertEquals(testStruct.children, Utils.sccSet2StringSetSet(scc.getChildren()));
+            assertEquals(testStruct.isFree, scc.isFree());
+            assertEquals(testStruct.children.size(), scc.getPins());
+        }
     }
 }
