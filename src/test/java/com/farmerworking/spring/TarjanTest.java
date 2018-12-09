@@ -158,7 +158,7 @@ public class TarjanTest {
             TestStruct testStruct = list.get(i);
 
             assertEquals(testStruct.children, Utils.sccSet2StringSetSet(scc.getChildren()));
-            assertEquals(testStruct.isFree, scc.isFree());
+            assertEquals(testStruct.isFree, scc.getPins() == 0);
             assertEquals(testStruct.children.size(), scc.getPins());
             assertEquals(testStruct.parents, Utils.sccSet2StringSetSet(scc.getParents()));
         }

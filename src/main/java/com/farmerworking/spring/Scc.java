@@ -52,21 +52,21 @@ public class Scc {
         return result;
     }
 
-    private void pin() {
+    // must be thread-safe
+    private synchronized void pin() {
         this.pins ++;
     }
 
-    public int getPins() {
+    // must be thread-safe
+    public synchronized int getPins() {
         return pins;
     }
 
-    public void unpin() {
+    // must be thread-safe
+    public synchronized int unpin() {
         assert this.pins > 0;
         this.pins --;
-    }
-
-    public boolean isFree() {
-        return this.pins == 0;
+        return this.pins;
     }
 
     public Set<String> toStringSet() {
