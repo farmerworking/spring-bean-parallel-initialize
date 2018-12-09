@@ -49,4 +49,10 @@ public class SccTest {
         scc.addNode(B);
         assertEquals(Sets.newHashSet("A", "B"), scc.toStringSet());
     }
+
+    @Test(expected = AssertionError.class)
+    public void testUnpin() throws Exception {
+        Scc scc = new Scc();
+        scc.unpin();
+    }
 }
