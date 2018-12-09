@@ -66,6 +66,7 @@ public class Tarjan {
             for(Node node : scc.getAdjacentNodes()) {
                 assert node2SccMap.get(node) != null;
                 scc.addChild(node2SccMap.get(node));
+                node2SccMap.get(node).addParent(scc);
             }
         }
 

@@ -58,9 +58,9 @@ public class TarjanTest {
         DirectedGraph<Scc> graph = tarjan.generateSccGraph();
 
         List<TestStruct> list = Lists.newArrayList(
-                new TestStruct(new HashSet<>(), true),
-                new TestStruct(setOfScc(Sets.newHashSet("4")), false),
-                new TestStruct(setOfScc(Sets.newHashSet("3")), false)
+                new TestStruct(setOfScc(Sets.newHashSet("3")), new HashSet<>(), true),
+                new TestStruct(setOfScc(Sets.newHashSet("0", "1", "2")), setOfScc(Sets.newHashSet("4")), false),
+                new TestStruct(new HashSet<>(), setOfScc(Sets.newHashSet("3")), false)
         );
 
         testSuit(graph, list);
@@ -72,14 +72,17 @@ public class TarjanTest {
         DirectedGraph<Scc> graph = tarjan.generateSccGraph();
 
         List<TestStruct> list = Lists.newArrayList(
-                new TestStruct(new HashSet<>(), true),
-                new TestStruct(setOfScc(Sets.newHashSet("1")), false),
-                new TestStruct(setOfScc(Sets.newHashSet("0", "2", "3", "4", "5")), false),
+                new TestStruct(setOfScc(Sets.newHashSet("0", "2", "3", "4", "5")), new HashSet<>(), true),
+                new TestStruct(setOfScc(Sets.newHashSet("9", "10", "11", "12"), Sets.newHashSet("6", "8")), setOfScc(Sets.newHashSet("1")), false),
                 new TestStruct(setOfScc(
+                        Sets.newHashSet("6", "8"),
+                        Sets.newHashSet("7")), setOfScc(Sets.newHashSet("0", "2", "3", "4", "5")), false),
+                new TestStruct(setOfScc(
+                        Sets.newHashSet("7")), setOfScc(
                         Sets.newHashSet("0", "2", "3", "4", "5"),
                         Sets.newHashSet("9", "10", "11", "12")),
                         false),
-                new TestStruct(setOfScc(
+                new TestStruct(new HashSet<>(), setOfScc(
                         Sets.newHashSet("6", "8"),
                         Sets.newHashSet("9", "10", "11", "12")),
                         false)
@@ -95,20 +98,31 @@ public class TarjanTest {
         DirectedGraph<Scc> graph = tarjan.generateSccGraph();
 
         List<TestStruct> list = Lists.newArrayList(
-                new TestStruct(new HashSet<>(), true),
-                new TestStruct(setOfScc(Sets.newHashSet("21")), false),
-                new TestStruct(setOfScc(Sets.newHashSet(var)), false),
-                new TestStruct(setOfScc(Sets.newHashSet(var), Sets.newHashSet("41")), false),
-                new TestStruct(setOfScc(Sets.newHashSet(var), Sets.newHashSet("7")), false),
-                new TestStruct(setOfScc(Sets.newHashSet(var), Sets.newHashSet("21")), false),
-                new TestStruct(setOfScc(Sets.newHashSet(var), Sets.newHashSet("14")), false),
                 new TestStruct(setOfScc(
+                        Sets.newHashSet(var),
+                        Sets.newHashSet("1"),
+                        Sets.newHashSet("14")), new HashSet<>(), true),
+                new TestStruct(setOfScc(
+                        Sets.newHashSet("0"),
+                        Sets.newHashSet("45"),
+                        Sets.newHashSet("1"),
+                        Sets.newHashSet("14"),
+                        Sets.newHashSet("7"),
+                        Sets.newHashSet("41"),
+                        Sets.newHashSet("10"),
+                        Sets.newHashSet("24", "36", "3", "4", "27", "17", "20")), setOfScc(Sets.newHashSet("21")), false),
+                new TestStruct(setOfScc(Sets.newHashSet("7"), Sets.newHashSet("10")), setOfScc(Sets.newHashSet(var)), false),
+                new TestStruct(setOfScc(Sets.newHashSet("0"), Sets.newHashSet("10")), setOfScc(Sets.newHashSet(var), Sets.newHashSet("41")), false),
+                new TestStruct(setOfScc(Sets.newHashSet("10")), setOfScc(Sets.newHashSet(var), Sets.newHashSet("7")), false),
+                new TestStruct(setOfScc(Sets.newHashSet("45"), Sets.newHashSet("1")), setOfScc(Sets.newHashSet(var), Sets.newHashSet("21")), false),
+                new TestStruct(setOfScc(Sets.newHashSet("1")), setOfScc(Sets.newHashSet(var), Sets.newHashSet("14")), false),
+                new TestStruct(new HashSet<>(), setOfScc(
                         Sets.newHashSet(var),
                         Sets.newHashSet("21"),
                         Sets.newHashSet("14"),
                         Sets.newHashSet("45")), false),
-                new TestStruct(setOfScc(Sets.newHashSet(var)), false),
-                new TestStruct(setOfScc(
+                new TestStruct(new HashSet<>(), setOfScc(Sets.newHashSet(var)), false),
+                new TestStruct(new HashSet<>(), setOfScc(
                         Sets.newHashSet(var),
                         Sets.newHashSet("41"),
                         Sets.newHashSet("7"),
@@ -120,9 +134,11 @@ public class TarjanTest {
 
     class TestStruct {
         Set<Set<String>> children;
+        Set<Set<String>> parents;
         boolean isFree;
 
-        public TestStruct(Set<Set<String>> children, boolean isFree) {
+        public TestStruct(Set<Set<String>> parents, Set<Set<String>> children, boolean isFree) {
+            this.parents = parents;
             this.children= children;
             this.isFree = isFree;
         }
@@ -144,6 +160,7 @@ public class TarjanTest {
             assertEquals(testStruct.children, Utils.sccSet2StringSetSet(scc.getChildren()));
             assertEquals(testStruct.isFree, scc.isFree());
             assertEquals(testStruct.children.size(), scc.getPins());
+            assertEquals(testStruct.parents, Utils.sccSet2StringSetSet(scc.getParents()));
         }
     }
 }

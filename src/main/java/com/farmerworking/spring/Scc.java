@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 public class Scc {
     private Set<Node> nodeSet = new HashSet<>();
     private Set<Scc> children = new HashSet<>();
+    private Set<Scc> parents = new HashSet<>();
     private int pins = 0;
 
     public Set<Node> getNodeSet() {
@@ -19,6 +20,10 @@ public class Scc {
         return children;
     }
 
+    public Set<Scc> getParents() {
+        return parents;
+    }
+
     public void addNode(Node node) {
         this.nodeSet.add(node);
     }
@@ -27,6 +32,10 @@ public class Scc {
         if (this.children.add(scc)) {
             this.pin();
         }
+    }
+
+    public void addParent(Scc scc) {
+        this.parents.add(scc);
     }
 
     public Set<Node> getAdjacentNodes() {
